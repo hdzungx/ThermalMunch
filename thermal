@@ -1,0 +1,31 @@
+run () {
+	if [[ $1 == "d" ]]; then
+		if [[ -d decrypted ]]; then
+			rm -rf decrypted/*
+		else
+			mkdir decrypted
+		fi
+		./miui-thermal -d=true -i=./origin -o=decrypted
+
+	fi
+
+	if [[ $1 == "e" ]]; then
+		if [[ ! -d decrypted ]]; then
+			echo "You need to decode before encoding"
+		else
+			if [[ -d encrypted ]]; then
+				rm -rf encrypted/*
+			else
+				mkdir encrypted
+			fi
+			./miui-thermal -d=false -i=./decrypted -o=encrypted
+		fi
+	fi
+
+}
+
+if [[ ! -d origin ]]; then
+	echo "You need to put the thermal conf file in the origin folder"
+else
+	run $1
+fi
